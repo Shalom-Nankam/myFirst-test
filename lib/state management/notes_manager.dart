@@ -5,10 +5,15 @@ import 'package:map_exam/model/note.dart';
 class NotesManager extends GetxController {
   // final FireStoreData _fireStoreData = FireStoreData();
 
-  var isExpanded = false.obs;
+  var notesAreExpanded = false.obs;
+  var showEditingTools = 0.obs;
 
   expandNotes() {
-    isExpanded(!isExpanded.value);
+    notesAreExpanded(!notesAreExpanded.value);
+  }
+
+  showEditingTool(int number) {
+    showEditingTools(number);
   }
 
   Stream<List<Note>> getUsersNotes(String userId) {

@@ -8,16 +8,20 @@ class NoteTile extends StatelessWidget {
   NoteTile({
     Key? key,
     required this.note,
+    required this.tileIndex,
   }) : super(key: key);
   final Note note;
-  NotesManager noteManager = Get.find();
+
+  final NotesManager noteManager = Get.find();
+  int tileIndex;
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => ListTile(
         trailing: SizedBox(
           width: 110.0,
-          child: noteManager.isExpanded.value
+          child: noteManager.showEditingTools.value == (tileIndex + 1)
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -37,9 +41,16 @@ class NoteTile extends StatelessWidget {
               : null,
         ),
         title: Text(note.title!),
-        subtitle: noteManager.isExpanded.value ? Text(note.content!) : null,
+        subtitle:
+            noteManager.notesAreExpanded.value ? Text(note.content!) : null,
         onTap: () {},
-        onLongPress: () {},
+        onLongPress: () {
+          if (noteManager.showEditingTools.value != (tileIndex + 1)) {
+            noteManager.showEditingTool(tileIndex + 1);
+          } else {
+            noteManager.showEditingTool(0);
+          }
+        },
       ),
     );
   }

@@ -64,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               itemBuilder: (context, index) => NoteTile(
                 note: notes![index],
+                tileIndex: index,
               ),
             );
           } else if (snapshot.hasError) {
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Obx(
             () => FloatingActionButton(
-                child: noteManager.isExpanded.value
+                child: noteManager.notesAreExpanded.value
                     ? const Icon(Icons.unfold_less)
                     : const Icon(Icons.menu),
                 tooltip: 'Show less. Hide notes content',
