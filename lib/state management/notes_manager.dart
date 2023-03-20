@@ -5,7 +5,11 @@ import 'package:map_exam/model/note.dart';
 class NotesManager extends GetxController {
   // final FireStoreData _fireStoreData = FireStoreData();
 
-  var userNotes = [].obs;
+  var isExpanded = false.obs;
+
+  expandNotes() {
+    isExpanded(!isExpanded.value);
+  }
 
   Stream<List<Note>> getUsersNotes(String userId) {
     return FirebaseFirestore.instance

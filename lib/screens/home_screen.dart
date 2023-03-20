@@ -78,10 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-              child: const Icon(Icons.menu),
-              tooltip: 'Show less. Hide notes content',
-              onPressed: () {}),
+          Obx(
+            () => FloatingActionButton(
+                child: noteManager.isExpanded.value
+                    ? const Icon(Icons.unfold_less)
+                    : const Icon(Icons.menu),
+                tooltip: 'Show less. Hide notes content',
+                onPressed: () => noteManager.expandNotes()),
+          ),
 
           /* Notes: for the "Show More" icon use: Icons.menu */
 
