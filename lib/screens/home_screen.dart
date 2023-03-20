@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_exam/model/note.dart';
 import 'package:map_exam/state%20management/auth_manager.dart';
 import 'package:map_exam/state%20management/notes_manager.dart';
 
+import '../model/note.dart';
 import '../widgets/note_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,12 +23,29 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('My Notes'),
         actions: [
           CircleAvatar(
-            backgroundColor: Colors.blue.shade200,
-            child: const Text(
-              '4',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
-            ),
-          ),
+              backgroundColor: Colors.blue.shade200,
+              child: StreamBuilder<List<Note>>(
+                stream: noteManager.getUsersNotes(authManager.loggedInUserId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final notes = snapshot.data;
+
+                    return Text(
+                      '${notes!.length}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 22.0),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text(
+                      '0',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 22.0),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              )),
           const SizedBox(
             width: 10,
           ),
