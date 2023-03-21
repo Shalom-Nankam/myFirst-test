@@ -16,6 +16,8 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends State<EditScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  late bool showBothActions;
+  late String appbarTitle;
 
   @override
   void initState() {
@@ -23,6 +25,19 @@ class _EditScreenState extends State<EditScreen> {
 
     _titleController.text = widget.note?.title ?? '';
     _descriptionController.text = widget.note?.content ?? '';
+    showBothActions = widget.modeType != EditMode.view;
+
+    switch (widget.modeType) {
+      case EditMode.view:
+        appbarTitle = 'View Note';
+        break;
+      case EditMode.edit:
+        appbarTitle = 'Edit Note';
+        break;
+      case EditMode.add:
+        appbarTitle = 'Add new Note';
+        break;
+    }
   }
 
   @override
@@ -31,14 +46,15 @@ class _EditScreenState extends State<EditScreen> {
       appBar: AppBar(
         leading: Container(),
         centerTitle: true,
-        title: const Text('App Bar Title'),
+        title: Text(appbarTitle),
         actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.check_circle,
-                size: 30,
-              ),
-              onPressed: () {}),
+          if (showBothActions)
+            IconButton(
+                icon: const Icon(
+                  Icons.check_circle,
+                  size: 30,
+                ),
+                onPressed: () {}),
           IconButton(
               icon: const Icon(
                 Icons.cancel_sharp,
