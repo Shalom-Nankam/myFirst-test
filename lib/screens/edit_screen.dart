@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:map_exam/state%20management/auth_manager.dart';
+import 'package:map_exam/state%20management/notes_manager.dart';
 import 'package:map_exam/utils/enum.dart';
 
 import '../model/note.dart';
@@ -14,6 +17,8 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
+  NotesManager notesManager = Get.find();
+  AuthManager authManager = Get.find();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   late bool showOneAction;
@@ -54,13 +59,35 @@ class _EditScreenState extends State<EditScreen> {
                   Icons.check_circle,
                   size: 30,
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  if (widget.modeType == EditMode.edit) {
+                    final note = Note.fromJson({
+                      'id': widget.note?.id,
+                      'title': _titleController.text,
+                      'content': _descriptionController.text
+                    });
+                    notesManager.editANote(note, authManager.loggedInUserId);
+                    notesManager.showEditingTool(0);
+                    Get.back();
+                  } else {
+                    final note = Note.fromJson({
+                      'id': notesManager.itemsNumber + 1,
+                      'title': _titleController.text,
+                      'content': _descriptionController.text
+                    });
+                    notesManager.addANote(note, authManager.loggedInUserId);
+                    notesManager.showEditingTool(0);
+                    Get.back();
+                  }
+                }),
           IconButton(
               icon: const Icon(
                 Icons.cancel_sharp,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Get.back();
+              }),
         ],
       ),
       body: Container(

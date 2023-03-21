@@ -9,6 +9,7 @@ class NotesManager extends GetxController {
 
   var notesAreExpanded = false.obs;
   var showEditingTools = 0.obs;
+  int itemsNumber = 0;
 
   expandNotes() {
     notesAreExpanded(!notesAreExpanded.value);
@@ -26,6 +27,10 @@ class NotesManager extends GetxController {
         .snapshots()
         .map(
             (event) => event.docs.map((e) => Note.fromJson(e.data())).toList());
+  }
+
+  void getStreamItemsNumber(int streamData) {
+    itemsNumber = streamData;
   }
 
   deleteANote(Note note, String userId) async {

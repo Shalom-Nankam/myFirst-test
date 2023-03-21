@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final notes = snapshot.data;
-
+                    noteManager.getStreamItemsNumber(snapshot.data!.length);
                     return Text(
                       '${notes!.length}',
                       style: const TextStyle(
