@@ -12,8 +12,7 @@ class FireStoreData {
           .doc(userId)
           .collection("user_notes")
           .doc(note.id.toString())
-          .set(data)
-          .then((value) => print('deleted successfully'));
+          .set(data);
       return true;
     } on FirebaseException {
       return false;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_exam/screens/edit_screen.dart';
 import 'package:map_exam/state%20management/auth_manager.dart';
 import 'package:map_exam/state%20management/notes_manager.dart';
+import 'package:map_exam/utils/enum.dart';
 
 import '../model/note.dart';
 import '../widgets/note_tile.dart';
@@ -93,7 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
           FloatingActionButton(
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => const EditScreen(modeType: EditMode.add));
+            },
           ),
         ],
       ),

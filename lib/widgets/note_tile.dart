@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:map_exam/screens/edit_screen.dart';
 import 'package:map_exam/state%20management/auth_manager.dart';
 import 'package:map_exam/state%20management/notes_manager.dart';
+import 'package:map_exam/utils/enum.dart';
 
 import '../model/note.dart';
 
@@ -31,7 +32,10 @@ class NoteTile extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit, color: Colors.blue),
                       onPressed: () {
-                        Get.to(() => const EditScreen());
+                        Get.to(() => EditScreen(
+                              modeType: EditMode.edit,
+                              note: note,
+                            ));
                       },
                     ),
                     IconButton(
@@ -50,7 +54,12 @@ class NoteTile extends StatelessWidget {
         title: Text(note.title!),
         subtitle:
             noteManager.notesAreExpanded.value ? Text(note.content!) : null,
-        onTap: () {},
+        onTap: () {
+          Get.to(() => EditScreen(
+                modeType: EditMode.view,
+                note: note,
+              ));
+        },
         onLongPress: () {
           if (noteManager.showEditingTools.value != (tileIndex + 1)) {
             noteManager.showEditingTool(tileIndex + 1);

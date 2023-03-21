@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:map_exam/utils/enum.dart';
+
+import '../model/note.dart';
 
 class EditScreen extends StatefulWidget {
-  static Route route() => MaterialPageRoute(builder: (_) => const EditScreen());
-
-  const EditScreen({Key? key}) : super(key: key);
+  const EditScreen({Key? key, required this.modeType, this.note})
+      : super(key: key);
+  final EditMode modeType;
+  final Note? note;
 
   @override
   State<EditScreen> createState() => _EditScreenState();
@@ -12,6 +16,14 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends State<EditScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _titleController.text = widget.note?.title ?? '';
+    _descriptionController.text = widget.note?.content ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +54,8 @@ class _EditScreenState extends State<EditScreen> {
             TextFormField(
               controller: _titleController,
               initialValue: null,
-              enabled: true,
+              enabled: widget.modeType != EditMode.view,
+              readOnly: widget.modeType == EditMode.view,
               decoration: const InputDecoration(
                 hintText: 'Type the title here',
               ),
@@ -54,7 +67,8 @@ class _EditScreenState extends State<EditScreen> {
             Expanded(
               child: TextFormField(
                   controller: _descriptionController,
-                  enabled: true,
+                  enabled: widget.modeType != EditMode.view,
+                  readOnly: widget.modeType == EditMode.view,
                   initialValue: null,
                   maxLines: null,
                   expands: true,
