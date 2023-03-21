@@ -1,43 +1,50 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:map_exam/model/note.dart';
 
 class FireStoreData {
   final _db = FirebaseFirestore.instance;
 
-  Future addNewNote(Map<String, dynamic> note, String userId) async {
-    try {
-      DocumentReference newDocumentId = await _db
-          .collection('users')
-          .doc(userId)
-          .collection("user_notes")
-          .add(note);
-      return {"success": true, "message": newDocumentId.id};
-    } on FirebaseException catch (e) {
-      return {"success": false, "message": e.message};
-    }
-  }
-
-  Future editNote(
-      Map<String, dynamic> note, String userId, String documentID) async {
+  Future addNewNote(Note note, String userId) async {
+    final data = note.toJson();
     try {
       await _db
-          .collection('users')
+          .collection('notes')
           .doc(userId)
           .collection("user_notes")
-          .doc(documentID)
-          .update(note);
+          .doc(note.id.toString())
+          .set(data)
+          .then((value) => print('deleted successfully'));
       return true;
     } on FirebaseException {
       return false;
     }
   }
 
-  Future deleteNote(String userId, String documentID) async {
+  Future editNote(
+    Note note,
+    String userId,
+  ) async {
+    final data = note.toJson();
     try {
       await _db
-          .collection('users')
+          .collection('notes')
           .doc(userId)
           .collection("user_notes")
-          .doc(documentID)
+          .doc(note.id.toString())
+          .update(data);
+      return true;
+    } on FirebaseException {
+      return false;
+    }
+  }
+
+  Future deleteNote(String userId, Note note) async {
+    try {
+      await _db
+          .collection('notes')
+          .doc(userId)
+          .collection('user_notes')
+          .doc('${note.id}')
           .delete();
       return true;
     } on FirebaseException {

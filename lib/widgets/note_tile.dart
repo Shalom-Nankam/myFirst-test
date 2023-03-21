@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:map_exam/screens/edit_screen.dart';
+import 'package:map_exam/state%20management/auth_manager.dart';
 import 'package:map_exam/state%20management/notes_manager.dart';
 
 import '../model/note.dart';
@@ -13,6 +15,7 @@ class NoteTile extends StatelessWidget {
   final Note note;
 
   final NotesManager noteManager = Get.find();
+  final AuthManager authManager = Get.find();
   int tileIndex;
 
   @override
@@ -27,15 +30,19 @@ class NoteTile extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.edit, color: Colors.blue),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => const EditScreen());
+                      },
                     ),
                     IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.blue,
-                      ),
-                      onPressed: () {},
-                    ),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () async {
+                          await noteManager.deleteANote(
+                              note, authManager.loggedInUserId);
+                        }),
                   ],
                 )
               : null,
